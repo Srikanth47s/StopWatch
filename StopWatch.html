@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: gray;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 1.5rem;
+        }
+
+        #container {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            border: 5px solid black;
+            border-radius: 30px;
+            background-color: white;
+
+        }
+
+        #watchNum {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 4rem;
+            color: grey;
+            font-weight: bold;
+            padding: 20px;
+            text-align: center;
+            text-shadow: 4px 4px 4px gray;
+        }
+
+        #watchBtn button {
+            font-size: 1.2rem;
+            border: none;
+            min-width: 100px;
+            border-radius: 10px;
+            padding: 10px 20px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 25px;
+            transition: background-color 0.5s ease;
+        }
+
+        #starbtn {
+            background-color: hsl(120, 74%, 50%);
+        }
+
+        #stopbtn {
+            background-color: hsl(0, 84%, 64%);
+        }
+
+        #resetbtn {
+            background-color: hsl(229, 71%, 55%);
+        }
+
+        #starbtn:hover {
+            background-color: hsl(120, 88%, 31%);
+        }
+
+        #stopbtn:hover {
+            background-color: hsl(0, 84%, 50%);
+        }
+
+        #resetbtn:hover {
+            background-color: hsl(229, 84%, 30%);
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Stop Watch</h1>
+    <div id="container">
+        <div id="watchNum">
+            00:00:00:00
+        </div>
+        <div id="watchBtn">
+            <button id="starbtn" onclick="start()">Start</button>
+            <button id="stopbtn" onclick="stop()">Stop</button>
+            <button id="resetbtn" onclick="reset()">Reset</button>
+        </div>
+    </div>
+    <script>
+        const display = document.getElementById("watchNum");
+
+        let timer = null;
+        let startTime = 0;
+        let elapsedTime = 0;
+        let isRunning = false;
+
+        function start() {
+            if (!isRunning) {
+                startTime = Date.now() - elapsedTime;
+
+                timer = setInterval(update, 10);
+                isRunning = true;
+            }
+        }
+        function stop() {
+            if (isRunning) {
+                clearInterval(timer);
+                // elapsedTime = Date.now() - startTime;
+                isRunning = false;
+            }
+
+
+
+        }
+        function reset() {
+            clearInterval(timer);
+            startTime = 0;
+            elapsedTime = 0;
+            isRunning = false;
+            display.textContent = "00:00:00:00"; 
+
+        }
+        function update() {
+            const currentTime = Date.now();
+            elapsedTime = currentTime - startTime;
+
+            let hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+            let minutes = Math.floor(elapsedTime / (1000 * 60) % 60);
+            let seconds = Math.floor(elapsedTime / 1000 % 60);
+            let milliSeconds = Math.floor(elapsedTime % 1000 / 10);
+
+
+            // hours = hours.toString().padStart(2,0);
+            // minutes = minutes.toString().padStart(2,0);
+            // seconds = seconds.toString().padStart(2,0);
+            // milliSeconds = milliSeconds.toString().padStart(2,0);
+
+            hours = String(hours).padStart(2, "0");
+            minutes = String(minutes).padStart(2, "0");
+            seconds = String(seconds).padStart(2, "0");
+            milliSeconds = String(milliSeconds).padStart(2, "0");
+
+
+            display.textContent = `${hours}:${minutes}:${seconds}:${milliSeconds}`;
+
+        }
+
+    </script>
+</body>
+
+</html>
